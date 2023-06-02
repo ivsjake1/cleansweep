@@ -1,0 +1,330 @@
+{% block content %}
+{% load bootstrap_icons %}
+{% load active_link_tags %}
+{% load static %}
+
+<nav
+        class="navbar navbar-expand-lg     z-index-3 py-3 shadow-sm p-3 mb-5   rounded">
+    <div class="container">
+        <a class="navbar-brand fs-6"  href="{% url 'home'%}" rel="tooltip"  data-placement="bottom" >
+            <img src="{% static 'images/cleanlogo.png' %}" alt="Clean Logo" style="max-width: 100px; max-height: 100px;">
+
+
+        </a>
+        <button class="navbar-toggler text-gradient text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><i class="bi bi-list fs-3"></i></span>
+        </button>
+
+
+
+        <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto  " style="font-size:13px;">
+                <li class="nav-item px-3">
+                    <a class="nav-link  " href="{% url 'home'%}">
+                        <i class="bi bi-house-door me-2"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link  " href="{% url 'collection'%}">
+                        <i class="fa-solid fa-calendar me-2"></i> Schedule
+                    </a>
+                </li>
+
+                <li class="nav-item px-3">
+                    <a class="nav-link  " href="{% url 'news'%}">
+                        <i class="fa-regular fa-newspaper me-2"></i> News
+                    </a>
+                </li>
+                <li class="nav-item dropdown dropdown-hover mx-2 ms-4">
+                    <a class="nav-link ps-2     align-items-center" id="dropdownMenuPages1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-front-fill me-2"></i> Pickup
+                    </a>
+                    <div class="dropdown-menu   dropdown-sm p-3 border-radius-lg mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages1">
+                        <div class="  d-lg-block">
+                            <a href="{% url 'pickup'%}" class="dropdown-item border-radius-md">
+                                Request
+                            </a>
+                            <a href="{% url 'pickup_list'%}" class="dropdown-item border-radius-md">
+                                My Requests
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+
+                <li class="nav-item dropdown   mx-2 ms-4">
+                    <a class="nav-link ps-2       "
+                       id="dropdownMenuPages2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person me-2"></i>  {{request.user}}
+                        <i class="bi bi-caret-down-fill ms-2"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end   dropdown-md p-3 border-radius-lg mt-0   " aria-labelledby="dropdownMenuPages2">
+                        <div class="  d-lg-block">
+                            <a href="{% url 'profile'%}" class="dropdown-item border-radius-md  ">
+                                Profile
+                            </a>
+                            <a href="{% url 'pickup_list'%}" class="dropdown-item border-radius-md  ">
+                                My Requests
+                            </a>
+                            <a href="{% url 'logout'%}" class="dropdown-item border-radius-md  ">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item px-3 d-flex align-items-center position-relative ms-3" id="notification-div">
+                    <a href="#" class="dropdown-toggle position-relative my-2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bell" id="bell_shake"></i>
+                        {% if badge  %}
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                          </span>
+                        {% else %}
+
+                        {% endif %}
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-md p-3 border-radius-lg mt-0 shadow" aria-labelledby="navbarDropdown" style="position: absolute; top: 100%; right: 0;">
+                        {% for pickup in user_pickups %}
+                        <li>
+                            <a class="dropdown-item {% if not unread_pickup.is_read %}fw-bold{% endif %}" href="{% url 'pickup_details' id=pickup.id %}">
+                                <div class="row justify-content-between">
+                                    <div class="col-auto" >
+                                        {% if pickup.is_read == False %}
+                                        <h6 class="mb-0 fw-bold" style="font-size: 12px;">Pickup {{ pickup.id }}</h6>
+                                        {% else %}
+                                        <h6 class="mb-0 opacity-50" style="font-size: 12px;">Pickup {{ pickup.id }}</h6>
+                                        {% endif %}
+
+
+                                    </div>
+                                    <div class="col-auto">
+                                        {% if pickup.status == 'Complete' %}
+                                        <strong class="badge rounded" style="font-size: 10px; background-color: #27AE60;">{{ pickup.status }}</strong>
+                                        {% elif pickup.status == 'Pending' %}
+                                        <strong class="badge rounded" style="font-size: 10px; background-color: #D68910;">{{ pickup.status }}</strong>
+                                        {% elif pickup.status == 'On The Way' %}
+                                        <strong class="badge rounded" style="font-size: 10px; background-color: #2980B9;">{{ pickup.status }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+
+
+
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+                {% else %}
+                <a class=" fw-bold  link-light   bg-gradient-info rounded px-2 py-1   " aria-current="page" href="{% url 'login'%}">
+                    Sign In
+                </a>
+
+                {% endif %}
+                <li class="nav-item px-3 d-flex align-items-center ms-3 ">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+
+
+<style>
+.custom-dropdown {
+    margin-top: 20px; /* Adjust the value as needed */
+}
+.dropdown-toggle::after {
+    display: none; /* Hide the default down arrow */
+}
+a {
+  text-decoration: none; /* Remove the default underline */
+  border-bottom: 2px solid transparent; /* Add a new underline */
+}
+
+.btn-pink-moon {
+    background: #ec008c;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fc6767, #ec008c);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #E7078D, #A01DB5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+}
+
+
+    /* Dark Mode */
+    body.dark-mode {
+        background-color: #121212;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode h2,
+    body.dark-mode h1,
+    body.dark-mode h3,
+    body.dark-mode h4,
+    body.dark-mode h5,
+    body.dark-mode h6 {
+        color: #B6C8EF;
+        transition: color 0.3s ease;
+    }
+
+    body.dark-mode #pickup-alert {
+        background-color: #121212;
+        color: #B6C8EF;
+    }
+
+
+    body.dark-mode p {
+        color: #DFDFDF;
+        transition: color 0.3s ease;
+    }
+    body.dark-mode label {
+        color: #DFDFDF;
+        transition: color 0.3s ease;
+    }
+    body.dark-mode div {
+        background-color: #121212;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode nav.navbar a {
+        background-color: #121212;
+        color: #fff;
+        transition: color 0.3s ease;
+    }
+    body.dark-mode footer {
+        background-color: #121212;
+        color: #fff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode ul {
+        background-color: #121212;
+        color: #fff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode .dropdown-menu .dropdown-item:hover {
+        background-color: ;
+        color: #B6C8EF;
+    }
+    /* Light Mode */
+    body.light-mode {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.light-mode nav.navbar {
+        /* Add your light mode styles for the navbar here */
+    }
+    body.light-mode h2,
+    body.light-mode h1,
+    body.light-mode h3,
+    body.light-mode h4,
+    body.light-mode h5,
+    body.light-mode h6 {
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    /* Dark Mode */
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="email"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea {
+        background-color: transparent;
+        color: #B6C8EF;
+    }
+
+    body.dark-mode input[type="text"]:focus,
+    body.dark-mode input[type="password"]:focus,
+    body.dark-mode input[type="email"]:focus,
+    body.dark-mode textarea:focus {
+        background-color: transparent;
+        color: #B6C8EF;
+    }
+
+    /* Light Mode */
+    body.light-mode input[type="text"],
+    body.light-mode input[type="email"],
+    body.light-mode input[type="password"],
+    body.light-mode textarea {
+        background-color: transparent;
+        color: black;
+    }
+
+    body.light-mode input[type="text"]:focus,
+    body.light-mode input[type="password"]:focus,
+    body.light-mode input[type="email"]:focus,
+    body.light-mode textarea:focus {
+        background-color: transparent;
+        color: black;
+    }
+
+</style>
+<script>
+        const switchToggle = document.getElementById('flexSwitchCheckDefault');
+        const body = document.body;
+        const nav = document.querySelector('nav');
+
+        // Check if user has a theme preference stored
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+            body.classList.add(storedTheme);
+            nav.classList.add(`${storedTheme}-nav`);
+            switchToggle.checked = storedTheme === 'dark-mode';
+        }
+
+        switchToggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+                nav.classList.add('dark-mode-nav');
+                nav.classList.remove('light-mode-nav');
+                localStorage.setItem('theme', 'dark-mode');
+            } else {
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+                nav.classList.add('light-mode-nav');
+                nav.classList.remove('dark-mode-nav');
+                localStorage.setItem('theme', 'light-mode');
+            }
+        });
+
+    </script>
+
+
+
+
+<script>
+    var notificationDiv = document.getElementById('notification-div');
+    setInterval(function() {
+        fetch(location.href)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(html) {
+                var newDiv = document.createElement('div');
+                newDiv.innerHTML = html;
+                var newNotificationDiv = newDiv.querySelector('#notification-div');
+                notificationDiv.innerHTML = newNotificationDiv.innerHTML;
+            })
+            .catch(function(err) {
+                console.error(err);
+            });
+    }, 9000);
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+<title>CleanSweep</title>
+
+<style>
+
+
+</style>
+
+{% extends 'base.html'%}
+{% block content %}
+
+{% if headers %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h1 class="text-gradient text-primary ">{{ headers.title }}</h1>
+                <p class="lead fw-bold">
+                    {{ headers.text }}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h1 class="placeholder col-6 text-dark"></h1>
+                <p class="lead fw-bold">
+                    <span class="placeholder col-4 "></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
+
+{% if goals %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <span class="badge rounded-pill bg-primary mb-2">Our Goal</span>
+                <h2>{{goals.title|default_if_none:""}}</h2>
+                <p>
+                    {{goals.text|default_if_none:""}}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <span class="badge rounded-pill bg-primary mb-2">Our Goal</span><br>
+                <h2 class="placeholder col-6 text-dark"></h2>
+                <p class="lead fw-bold">
+                    <span class="placeholder col-4 "></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
+
+
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="card col-md-3">
+                <h1 class="text-gradient text-primary">{{pickup_list}}</h1>
+                <h5 class="mt-3">Current Request</h5>
+                <p>Number of pending requests</p>
+            </div>
+            <div class="card col-md-3">
+                <h1 class="text-gradient text-primary">{{total_pickup_list}}</h1>
+                <h5 class="mt-3">Disposed</h5>
+                <p>Customer pickup requsets</p>
+            </div>
+            <div class="card col-md-3">
+                <h1 class="text-gradient text-primary">{{pickup_work}}</h1>
+                <h5 class="mt-3">Pickup</h5>
+                <p>We are now currently disposing</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% if Event %}
+<section class="py-5" style="display:none;">
+    <div class="container-sm">
+        <div class="row">
+            <div class="container mt-4"  >
+                <img src="{{ Event.post_image.url }}"  style="width:100%;" class="img-fluid" alt="...">
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+{% include 'slides.html' %}
+
+
+
+
+
+
+
+<div class="container  my-5 "  style="max-width:750px;" id="list-item-4" >
+    <h3 class="text-gradient text-primary ">Types Of Wastes</h3>
+
+    {% if wastes %}
+    {% for wastes in wastes %}
+    <div class="card mb-3" >
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ wastes.post_image.url }}"   class="rounded border-0"  alt="..."   >
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{wastes.type}}</h5>
+                    <p class="card-text"> {{wastes.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="card mb-3" >
+        <div class="row g-0">
+            <div class="col-md-4">
+                <div class="container-fluid p-0 m-0 h-100">
+                    <div class="placeholder p-5 h-100 w-100"  >
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="placeholder col-6 text-dark">{{wastes.type}}</h5>
+                    <p class="placeholder col-12 text-dark py-5"> {{wastes.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

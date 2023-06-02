@@ -1,0 +1,88 @@
+ {% block content %}
+
+ <footer class="  pt-5 mt-5  shadow-sm" style="font-size:12px;">
+  <div class="container">
+    <div class="row text-end">
+      <div class="col">
+        {% if request.user.is_superuser %}
+        {% if footer_data %}
+        <a href=" " class="btn btn-sm me-2 text-dark float-end " style="text-decoration: none; display:none;" >
+          <i class="fa-solid fa-pen-nib"></i> Edit
+        </a>
+        {% else %}
+        <a href=" " class="btn btn-sm me-2 text-dark float-end " style="text-decoration: none; display:none;" >
+          <i class="fa-solid fa-plus"></i> Create
+        </a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-md-3 mt-5">
+        <h6 class="text-gradient text-primary  mt-3">Cleansweep</h6>
+        <span>Contact</span>
+        <address class="text-muted mt-2">
+          {% if footer_data.Contact1 %}
+          <i class="fa-solid fa-phone me-2 text-success"></i>{{ footer_data.Contact1 }}<br>
+          {% endif %}
+          {% if footer_data.Contact2 %}
+          <i class="fa-solid fa-phone me-2 text-success"></i>{{ footer_data.Contact2 }}<br>
+          {% endif %}
+          {% if footer_data.Landline %}
+          <i class="fa-solid fa-phone me-2 text-success"></i>{{ footer_data.Landline }}<br>
+          {% endif %}
+          {% if footer_data.Address %}
+          <i class="fa-solid fa-location-dot me-2 text-danger"></i>{{ footer_data.Address }}<br>
+          {% endif %}
+        </address>
+        <span class="mt-3 text-black ">Email Us</span>
+        <br>
+        <span class="text-muted user-select-all me-1"><i class="fa-regular fa-envelope me-2 mt-2"></i>{{ footer_data.Email_us }}</span>
+        <br><br>
+        <span class="mt-3 text-black">Facebook</span>
+        <br>
+        <span class="text-primary  "><a  target="_blank" href="{{ footer_data.Facebook }}" class="">
+          <i class="fa-brands fa-facebook-f me-2 mt-2"></i>Facebook page.</a></span>
+      </div>
+
+
+      <div class="col-md-3 mt-5">
+        <h6 class="text-gradient text-primary  mt-3">About Us</h6>
+        <ul class="list-unstyled">
+          <p class="text-break text-muted">{{ footer_data.About }}</p>
+        </ul>
+      </div>
+
+      <div class="col-md-3  mt-5">
+        <h6 class="text-gradient text-primary mt-3">Business Hours</h6>
+            <div class="mt-3 text-muted" >
+                {% for data in business_hours%}
+                   <p class="m-0 p-0" style="font-size:12px;">{{ data.day}}:
+                       {{ data.start_time|default_if_none:"" }} - {{ data.end_time|default_if_none:""  }}</p>
+                 {% endfor %}
+            </div>
+      </div>
+      <div class="col-md-3  mt-5">
+        <h6 class="text-gradient text-primary mt-3">Thanks to:</h6>
+        <ul class="list-unstyled ">
+          <li><a  class="text-muted">Yves Jake Peñaflor</a></li>
+        </ul>
+      </div>
+
+
+    </div>
+
+
+<br><br><br>
+    <div class="row text-center" >
+        <p style="font-size:12px;">&copy; 2023 Peñaflor. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+
+{% endblock %}

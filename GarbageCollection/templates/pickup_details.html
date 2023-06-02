@@ -1,0 +1,77 @@
+<title>CleanSweep</title>
+<style>
+    .form-group {
+    }
+</style>
+
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="container-sm mt-5 rounded-2"  style="max-width:960px; font-size:13px; ">
+    <div class="container-sm       card p-0 rounded-4 "   >
+        <h5 class=" card-title m-0 p-3 bg-gradient-dark text-white rounded-top  ">Pickup {{ data.id}}</h5>
+        <div class="border border-0 p-4 row g-3" class="form-control form-control-lg">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="label">
+                    <label class="form-label">City</label>
+                </div>
+                <input type="text" class="form-control bg-transparent "
+                       value="{{data.city}}" readonly>
+            </div>
+            <div class="col-md-6">
+                <div class="label">
+                    <label class="form-label">Barangay</label>
+                </div>
+                <input type="text" class="form-control bg-transparent " value="{{data.barangay}}"  readonly>
+            </div>
+            <div class="col-12">
+                <div class="label">
+                    <label class="form-label">Street</label>
+                </div>
+                <input type="text" class="form-control bg-transparent " value="{{data.street}}"  readonly>
+            </div>
+            <div class="col-md-6">
+                <div class="label">
+                    <label class="form-label">Building</label>
+                </div>
+                <input type="text" class="form-control bg-transparent " value="{{data.building}}"  readonly>
+            </div>
+            <div class="col-md-5">
+                <div class="label">
+                    <label class="form-label">House Number</label>
+                </div>
+                <input type="text" class="form-control bg-transparent " value="{{data.house_no}}"  readonly>
+            </div>
+            <div class="col-md-4">
+                <div class="label">
+                    <label class="form-label">Type of Complaint</label>
+                </div>
+
+                {% for type_value in data.type %}
+                <p class="badge bg-dark " style="font-size:13px">{{ type_value }}</p>
+                {% endfor %}
+
+            </div>
+            <hr>
+            {% if not data.comment_request %}
+            {% else %}
+            <div class="label">
+                <label class="form-label">Reply</label>
+            </div>
+            <textarea class="form-control form-control-sm p-2 bg-transparent mt-0"   type="text"
+                      rows="5" cols="1"   onkeypress="auto_grow(this);" onkeyup="auto_grow(this);"
+                      style=" resize:none; overflow:hidden; "   readonly>{{data.comment_request}}.</textarea>
+            {% endif %}
+        </div>
+
+
+
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}
+
+

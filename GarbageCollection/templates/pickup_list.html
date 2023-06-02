@@ -1,0 +1,151 @@
+<title>CleanSweep</title>
+
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="container">
+    <div class="card mb-3 border-0  w-100 p-4" >
+        <div class="row justify-content-between">
+            <div class="col-lg-6  ">
+                {% if user.is_authenticated %}
+                <div class="row">
+                    <h1 class="card-title m-0 mb-4 text-gradient text-primary" style="text-transform: capitalize;">{{ user.username}}</h1>
+                </div>
+                {% else %}
+                <h1 class="card-title   rounded ">
+                    <span class="placeholder col-6 text-dark"></span>
+                </h1>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <div class="row">
+                    <p class="card-text m-0 fw-bold">{{ user.first_name}} {{ user.last_name}} </p>
+                </div>
+                {% else %}
+                <p class="card-title   rounded">
+                    <span class="placeholder col-4"></span>
+                </p>
+                {% endif %}
+                {% if user.is_authenticated %}
+
+                <div class="row">
+                    <p class="card-subtitle m-0   ">{{ user.email}}  </p>
+                </div>
+                {% else %}
+                <p class="card-title  rounded">
+                    <span class="placeholder col-5"></span>
+                </p>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <div class="row">
+                    <p class="card-subtitle m-0  ">Date joined: {{user.date_joined|date:"M d, Y"}}  </p>
+                </div>
+                {% else %}
+                <p class="card-title  rounded">
+                    <span class="placeholder col-3"></span>
+                </p>
+                {% endif %}
+            </div>
+            <div class="col-auto  d-flex justify-content-end align-items-end ps-0">
+                {% if user.is_authenticated %}
+                <div class="row m-0 mt-5  ">
+                    <div class="text-muted ">
+                        <p class="card-title m-0 mt-1">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Complete:  <strong>{{complete_pickup_list}}</strong>
+                        </p>
+                        <p class="card-title m-0 mt-1">
+                            <i class="bi bi-hourglass-split"></i>
+                            Pending:  <strong >{{pending_pickup_list}}</strong>
+                        </p>
+                        <p class="card-title m-0 mt-1">
+                            <i class="bi bi-truck-front-fill"></i>
+                            On The Way:  <strong >{{moving}}</strong>
+                        </p>
+                    </div>
+                    <br>
+                </div>
+                {% else %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container mt-0 mb-5"   >
+    <div class="row justify-content-between mb-5">
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+
+            {% if user.is_authenticated %}
+            <div class="dropdown-center d-inline float-end">
+                <button class="btn   dropdown-toggle     border-0" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="me-2">Pending</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end text-muted border" aria-labelledby="dropdownCenterBtn">
+                    <li><a class="dropdown-item text-muted  " href="{% url 'pickup_list'%}">Pending</a></li>
+                    <li><a class="dropdown-item text-muted  " href="{% url 'pickup_list_complete'%}">Complete</a></li>
+                    <li><a class="dropdown-item text-muted  " href="{% url 'pickup_list_ontheway'%}">On The Way</a></li>
+                </ul>
+            </div>
+            {% else %}
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% for data in show_list %}
+    <div class="  card mt-2        shadow-sm p-3 pb-0 mt-0   rounded-0 " >
+        <strong class="ms-2">
+            <a href="{% url 'delete-request' id=data.id %}" class="float-end">
+                <i class="bi bi-x-circle-fill"></i>
+            </a>
+        </strong>
+    </div>
+    <a style="text-decoration: none; color: inherit;" href="{% url 'pickup_details' id=data.id %}">
+
+        <div class="  card  mb-3 p-3      shadow-sm p-3 mb-5   rounded " >
+
+            <div class="row justify-content-between mt-2">
+                <div class="col-auto">
+                    <h5 class="mb-0" >Pickup {{ data.id}}</h5>
+                    <span class="text-muted  fw-light " style="font-size:12px;">
+                    {{ data.date | timesince}} ago
+                    </span>
+                </div>
+                <div class=" col-auto ">
+                    {% if not data.comment_request %}
+                    {% else %}
+                    <i class="fa-solid fa-message me-2 text-dark" style="font-size:17px;  "></i>
+                    {% endif %}
+                    {% if data.status == 'Complete' %}
+                    <strong class=" text-white px-2 py-1  rounded"  style="font-size:12px; background-color:#27AE60; ">{{ data.status}}</strong>
+                    {% elif  data.status == 'Pending' %}
+                    <strong class="  text-white px-2 py-1  rounded"  style="font-size:12px; background-color:#D68910; ">{{ data.status}}</strong>
+                    {% elif  data.status == 'On The Way' %}
+                    <strong class="  text-white px-2 py-1  rounded"  style="font-size:12px; background-color:#2980B9; ">{{ data.status}}</strong>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row justify-content-between mt-2">
+                <div class="col-auto   ">
+                    <h6 class="heading text-primary text-truncate"  style="font-size:15px;">{{ data.type|default_if_none:""}}</h6>
+                    <p class="   fw-bold m-0 text-truncate " style="font-size:15px;">{{ data.house_no|default_if_none:""}} {{ data.street}}, {{ data.barangay}}, {{ data.city}}.</p>
+                </div>
+
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <div class="container-fluid text-center">
+        <div class="card" style="height: 140px;">
+            <h5 class="text-muted pt-5">Empty</h5>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,145 @@
+<title>CleanSweep</title>
+<style>
+    .form-group {
+    }
+</style>
+
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="container-sm mt-5 rounded-2"  style="max-width:960px; font-size:13px; ">
+    <div class="alert  border " role="alert" id="pickup-alert">
+        <strong><i class="bi bi-exclamation-circle-fill"></i></strong>
+        Please segregate the waste before requesting.
+    </div>
+
+    <div class="container-sm       card p-0 rounded-4 "   >
+        <h5 class=" card-title m-0 p-3 bg-gradient-dark text-white rounded-top  ">Request Waste Pickup</h5>
+
+<div class="progress-wrapper mt-1 " >
+    <div class="progress" style="height: 10px;">
+        <div id="progress-bar" class="progress-bar bg-gradient-dark" role="progressbar" style="width: 0%; height: 10px;"></div>
+    </div>
+</div>
+
+
+
+<form class="border border-0 p-4 row g-3" id="submit_form" method="POST" enctype="multipart/form-data" class="form-control form-control-lg">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <div class="label">
+            <label class="form-label">City</label>
+        </div>
+        {{ form.city }}
+    </div>
+    <div class="col-md-6">
+        <div class="label">
+            <label class="form-label">Barangay</label>
+        </div>
+        {{ form.barangay }}
+    </div>
+    <div class="col-12">
+        <div class="label">
+            <label class="form-label">Street</label>
+        </div>
+        {{ form.street }}
+    </div>
+    <div class="col-md-6">
+        <div class="label">
+            <label class="form-label">Building</label>
+        </div>
+        {{ form.building }}
+    </div>
+    <div class="col-md-5">
+        <div class="label">
+            <label class="form-label">House Number</label>
+        </div>
+        {{ form.house_no }}
+    </div>
+    <div class="col-md-4">
+        <div class="label">
+            <label class="form-label">Type of Complaint</label>
+        </div>
+        {% for value, label in form.fields.type.choices %}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="{{ value }}" id="checkbox_{{ value }}" name="type">
+            <label class="form-check-label" for="checkbox_{{ value }}">
+                {{ label }}
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="remember" id="remember_checkbox" name="remember">
+            <label class="form-check-label" for="remember_checkbox">Remember Me</label>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <button class="btn bg-gradient-dark px-5 mt-3" form="submit_form" type="submit">Submit</button>
+    {% else %}
+    <button class="btn btn-secondary px-5" form="submit_form" type="submit" disabled>Submit</button>
+    {% endif %}
+</form>
+
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        // Calculate the initial progress
+        var totalFields = $('input, textarea').not('[type="checkbox"]').length + 1; // Add 1 for the checkbox field
+        var progress = 0;
+
+        // Update the progress bar width
+        updateProgressBar(progress);
+
+        // Listen for input events on the form fields
+        $('input, textarea').not('[type="checkbox"]').on('input', function() {
+            // Calculate the overall progress
+            progress = calculateProgress();
+
+            // Update the progress bar width
+            updateProgressBar(progress);
+        });
+
+        // Listen for input events on the checkbox field
+        $('input[type="checkbox"]').on('change', function() {
+            // Calculate the overall progress
+            progress = calculateProgress();
+
+            // Update the progress bar width
+            updateProgressBar(progress);
+        });
+
+        // Function to calculate the overall progress
+        function calculateProgress() {
+            // Get the number of filled form fields
+            var filledFields = $('input, textarea').not('[type="checkbox"]').filter(function() {
+                return $(this).val().trim() !== '';
+            }).length;
+
+            // Add 1 if the checkbox is checked
+            if ($('input[type="checkbox"]').is(':checked')) {
+                filledFields++;
+            }
+
+            // Calculate the progress percentage
+            var progress = (filledFields / totalFields) * 100;
+
+            // Return the progress value
+            return progress;
+        }
+
+        // Function to update the progress bar width
+        function updateProgressBar(progress) {
+            // Update the width style of the progress bar
+            $('#progress-bar').css('width', progress + '%');
+        }
+    });
+</script>
+{% endblock %}
+
+

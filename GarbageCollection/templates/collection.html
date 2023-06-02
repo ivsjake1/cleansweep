@@ -1,0 +1,111 @@
+<title>CleanSweep</title>
+
+<style>
+
+
+</style>
+
+{% extends 'base.html'%}
+{% block content %}
+<div class="container-sm  mt-4"  >
+    <h2 class="text-gradient text-primary">Collection Schedule</h2>
+    <br>
+
+
+
+    {% for data in show_collection %}
+
+
+
+
+
+
+
+
+    <div class="container p-0">
+        <div class="card">
+
+            <div class="row  ">
+<div class="col-lg-6 custom-column">
+    <div class="thumbnail-container">
+        <img src="{{ data.route_image.url }}" class="img-thumbnail rounded float-start thumbnail-image">
+    </div>
+</div>
+                <div class="col-lg-6 ">
+                    <div class="row p-3">
+                        <div class="col d-flex justify-content-end">
+                            <a href="https://{{ data.route_link }}" target="_blank" class="btn bg-gradient-info m-0 ">
+                                <i class="bi bi-geo-alt"></i>
+                                View Map
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 m-3">
+                            <span class="d-block p-2  ">Route {{ data.route}}</span>
+                            <span class="d-block p-2  ">City {{ data.city}}</span>
+                            <span class="d-block p-2  ">Street {{ data.street}}</span>
+                            <span class="d-block p-2  ">Schedule  {{ data.schedule}}</span>
+                        </div>
+                        <div class="col-lg-6 m-3">
+                                            <span class="d-block">
+                             <h5 class="fw-bold">Type </h5>
+                        </span>
+                                <p class="badge bg-gradient-primary">{{ data.type|default_if_none:"" }}</p>
+                                <p class="badge bg-gradient-primary">{{ data.type_2|default_if_none:"" }}</p>
+                                <p class="badge bg-gradient-primary">{{ data.type_3|default_if_none:"" }}</p>
+                                <p class="badge bg-gradient-primary">{{ data.type_4|default_if_none:"" }}</p>
+                                <p class="badge bg-gradient-primary">{{ data.type_5|default_if_none:"" }}</p>
+                                <br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+{% endfor %}
+
+
+
+</div>
+<br>
+<style>
+    .thumbnail-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .thumbnail-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}

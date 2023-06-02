@@ -1,0 +1,179 @@
+<title>CleanSweep</title>
+<style>
+    .form-group {
+    }
+</style>
+
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+<div class=" container-sm mt-5"   >
+    <div class="card mb-3 border-0  w-100 p-4  g-3  " >
+        <div class="row    py-5        ">
+            <div class="col-lg-5  mx-auto  ">
+                <h1 class="text-gradient text-primary ">
+                    <i class="bi bi-person-fill"></i>
+                    <span class="fs-3">
+                    {{request.user.first_name}}
+                </span>
+                </h1>
+
+            </div>
+            <div class="col-lg-5  mx-auto  ">
+            </div>
+        </div>
+        <div class="row            pb-5">
+            <div class="col-lg-5  mx-auto  ">
+                <form   id="submit_form" method="POST" enctype="multipart/form-data"   >
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <p class="text-gradient text-primary ms-1 fw-bold">Username</p>
+                        </div>
+                        <div class="col">
+                            <a class="btn  mb-0 mt-auto float-end p-2      " role="button" id="edit_profile">
+                                <i class="fa-solid fa-pen-nib"></i>
+                                edit
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col ">
+                            <input type="text" class="form-control   bg-transparent" placeholder="First name" aria-label="First name"
+                                   name="username" value="{{user.username}}" id="floating1" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col">
+                            <div class="label">
+                                <label class="form-label">First Name</label>
+                            </div>
+                            <input type="text" class="form-control bg-transparent " placeholder="First name" aria-label="First name"
+                                   name="first_name" value="{{user.first_name}}" id="floating2" readonly>
+                        </div>
+                        <div class="col ">
+                            <div class="label">
+                                <label class="form-label">Last Name</label>
+                            </div>
+                            <input type="text" class="form-control bg-transparent " placeholder="Last name" aria-label="Last name"
+                                   name="last_name"  value="{{user.last_name}}" id="floating3" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col">
+                            <div class="label">
+                                <label class="form-label">Email</label>
+                            </div>
+                            <input type="email" class="form-control bg-transparent " placeholder="First name" aria-label="First name"
+                                   name="email" value="{{user.email}}" id="floating4" readonly>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="display:none;" id="btn_save">
+                        <div class="col">
+                            {% if user.is_authenticated %}
+                            <button class="btn btn-secondary px-5 mt-3 " form="submit_form" type="submit">Submit</button>
+                            {% else %}
+                            <button class="btn btn-secondary px-5" form="submit_form" type="submit" disabled>Submit</button>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="col-lg-5 mx-auto  "  >
+                <form method="POST" id="submit_form3" action="{% url 'update_password'%}" >
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <p class="text-gradient text-primary ms-1 fw-bold">Password</p>
+                        </div>
+                        <div class="col">
+                            <a class="btn  mb-0 mt-auto float-end p-2      " role="button" id="edit_password">
+                                <i class="fa-solid fa-pen-nib"></i>
+                                edit
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="container p-0  ">
+                        <input class="form-control my-3" type="text"  id="pass-hid" readonly>
+                    </div>
+                    <div class="row my-3"  style="display:none;" id="pass1">
+                        <div class="col ">
+                            <div class="label">
+                                <label class="form-label">New Password</label>
+                            </div>
+                            <input type="password" class="form-control"
+                                   name="new_password1" value="" required>
+                        </div>
+                    </div>
+                    <div class="row my-3"  style="display:none;" id="pass2">
+                        <div class="col ">
+                            <div class="label">
+                                <label class="form-label">Comfirm New Password</label>
+                            </div>
+                            <input type="password" class="form-control"
+                                   name="new_password2" value="" required>
+                        </div>
+                    </div>
+                    <div class="row my-3"  style="display:none;" id="new_pass">
+                        <div class="col ">
+                            <div class="label">
+                                <label class="form-label">Old Password</label>
+                            </div>
+                            <input type="password" class="form-control"
+                                   name="old_password" value="" required>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <button class="form-floating m-1 mt-4 btn btn-secondary px-5" form="submit_form3" type="submit"
+                            style="display:none;" id="save_pass">Save
+                    </button>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+document.getElementById('edit_profile').onclick = function() {
+    document.getElementById('floating1').removeAttribute('readonly');
+    document.getElementById('floating2').removeAttribute('readonly');
+    document.getElementById('floating3').removeAttribute('readonly');
+    document.getElementById('floating4').removeAttribute('readonly');
+
+    document.getElementById('btn_save').style.display = "block";
+};
+
+
+document.getElementById('edit_password').onclick = function() {
+    document.getElementById('pass1').style.display = "block";
+    document.getElementById('pass2').style.display = "block";
+    document.getElementById('new_pass').style.display = "block";
+    document.getElementById('save_pass').style.display = "block";
+    document.getElementById('pass-hid').style.display = "none";
+};
+</script>
+{% endblock %}
+
+
