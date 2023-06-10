@@ -86,7 +86,6 @@ def pickup(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.user = request.user
-        instance.remember_me = form.cleaned_data['remember']
         instance.save()
         messages.success(request, "Waste Pickup Requested...")
         return redirect('pickup')

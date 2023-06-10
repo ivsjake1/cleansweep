@@ -49,11 +49,9 @@ from django import forms
 from .models import CreatePickup
 
 class PickupForm(forms.ModelForm):
-    remember = forms.BooleanField(required=False)  # Remember Me checkbox
-
     class Meta:
         model = CreatePickup
-        fields = ('city', 'barangay', 'street', 'building', 'house_no', 'type', 'remember')
+        fields = ('city', 'barangay', 'street', 'building', 'house_no', 'type')
 
         widgets = {
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter City'}),
@@ -92,7 +90,6 @@ class PickupForm(forms.ModelForm):
         if house_no:
             return house_no.capitalize()
         return house_no
-
 
 
 class HeaderFrom(forms.ModelForm):

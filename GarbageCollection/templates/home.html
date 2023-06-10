@@ -2,6 +2,22 @@
 
 <style>
 
+.image-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* Creates a square aspect ratio */
+  position: relative;
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the entire image is visible within the square */
+}
+
 
 </style>
 
@@ -130,21 +146,25 @@
     <h3 class="text-gradient text-primary ">Types Of Wastes</h3>
 
     {% if wastes %}
-    {% for wastes in wastes %}
-    <div class="card mb-3" >
+{% for wastes in wastes %}
+    <div class="card mb-3">
         <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ wastes.post_image.url }}"   class="rounded border-0"  alt="..."   >
+            <div class="col-lg-4">
+                <div class="image-container">
+                    <img src="{{ wastes.post_image.url }}" class="rounded border-0 img-fluid" alt="..." >
+                </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-4">
                 <div class="card-body">
-                    <h5 class="card-title">{{wastes.type}}</h5>
-                    <p class="card-text"> {{wastes.description}}</p>
+                    <h5 class="card-title">{{ wastes.type }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ wastes.description }}</small></p>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
+{% endfor %}
+
+
     {% else %}
     <div class="card mb-3" >
         <div class="row g-0">

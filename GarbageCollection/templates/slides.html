@@ -8,7 +8,8 @@
             {% for news in news %}
 
             <div class="carousel-item {% if forloop.first %} active {% endif %}  " data-bs-interval="4000" >
-                <img src="{{ news.post_image.url }}" class="d-block w-100"   alt="...">
+                <img src="{{ news.post_image.url }}" class="d-block w-100" style="max-height: 50vh; object-fit: contain;" alt="...">
+
                 <div class=" bg-primary-soft text-center py-3 border-radius-sm mb-2">
                     <h4 class="  p-2 pb-0 mb-0 " style="text-transform: capitalize;">{{news.heading}}</h4>
                     <span class="badge rounded-pill bg-gradient-primary my-2">{{ news.post_date | timesince}} ago</span>
